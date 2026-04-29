@@ -533,7 +533,13 @@ const DateTimePicker = (
         type: CalendarActionKind.CHANGE_CURRENT_DATE,
         payload: newDate,
       });
-      setCalendarView('day');
+      if (initialView === 'day') {
+        setCalendarView('day');
+      } else {
+        (onChange as SingleChange)({
+          date: newDate,
+        });
+      }
     },
     [setCalendarView, onMonthChange]
   );
@@ -553,7 +559,13 @@ const DateTimePicker = (
         type: CalendarActionKind.CHANGE_CURRENT_DATE,
         payload: newDate,
       });
-      setCalendarView('day');
+      if (initialView === 'day') {
+        setCalendarView('day');
+      } else {
+        (onChange as SingleChange)({
+          date: newDate,
+        });
+      }
     },
     [setCalendarView, onYearChange]
   );
