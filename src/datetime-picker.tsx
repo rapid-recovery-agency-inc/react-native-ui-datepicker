@@ -573,22 +573,39 @@ const DateTimePicker = (
   const onChangeMonth = useCallback(
     (value: number) => {
       const newDate = dayjs(stateRef.current.currentDate).add(value, 'month');
+
+      if (maxDate && newDate.isAfter(dayjs(maxDate), 'month')) {
+        return;
+      }
+
+      if (minDate && newDate.isBefore(dayjs(minDate), 'month')) {
+        return;
+      }
+
       dispatch({
         type: CalendarActionKind.CHANGE_CURRENT_DATE,
         payload: dayjs(newDate),
       });
     },
-    [stateRef, dispatch]
+    [stateRef, dispatch, minDate, maxDate]
   );
 
   const onChangeYear = useCallback(
     (value: number) => {
+      if (maxDate && value > dayjs(maxDate).year()) {
+        return;
+      }
+
+      if (minDate && value < dayjs(minDate).year()) {
+        return;
+      }
+
       dispatch({
         type: CalendarActionKind.CHANGE_CURRENT_YEAR,
         payload: value,
       });
     },
-    [dispatch]
+    [dispatch, minDate, maxDate]
   );
 
   useEffect(() => {
